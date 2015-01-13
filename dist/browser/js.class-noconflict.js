@@ -26,7 +26,7 @@
     if(typeof define === 'function' && define.amd){
         define([],factory);
     }else{
-        root.Class = factory;
+        root.JSClass = factory;
     }
 })(this, (function(){
     var JSClass =  (function() {
