@@ -22,7 +22,14 @@
  * THE SOFTWARE.
  *
  **/
-var JSClass =  (function() {
+;(function(root, factory){
+    if(typeof define === 'function' && define.amd){
+        define([],factory);
+    }else{
+        root.JSClass = factory;
+    }
+})(this, (function(){
+    var JSClass =  (function() {
 
         function _rewriteStatics(fnc, statics) {
             for (var prop in statics) {
@@ -96,25 +103,6 @@ var JSClass =  (function() {
                     //apply constructor pattern
                     if (typeof this['create'] === 'function' && _preventCreateCall === false) {
                         this.create.apply(this, arguments);
-                    }
-
-                    //apply getter pattern
-                    if (classBody.hasOwnProperty('get')) {
-                        for (var p in classBody.get) {
-
-                            var setter = 'set' in classBody ? (p in classBody.set ? classBody.set[p] : null) : null;
-                            if (setter !== null) {
-                                delete classBody.set[p];
-                                Object.defineProperty(this, p, {
-                                    get: classBody.get[p],
-                                    set: setter
-                                });
-                            } else {
-                                Object.defineProperty(this, p, {
-                                    get: classBody.get[p]
-                                });
-                            }
-                        }
                     }
 
                     //apply setter pattern
@@ -224,3 +212,5 @@ var JSClass =  (function() {
             })(null, classBody);
         }
     })();
+    return JSClass;
+}));
